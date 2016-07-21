@@ -1,0 +1,179 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "vpc42186827": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "172.31.0.0/16",
+        "InstanceTenancy": "default",
+        "EnableDnsSupport": "true",
+        "EnableDnsHostnames": "true"
+      }
+    },
+    "igw0e46c16b": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+      }
+    },	
+    "gw1": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        },
+        "InternetGatewayId": {
+          "Ref": "igw0e46c16b"
+        }
+      }
+    },
+    "rtb5a9ee73f": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },	
+    "route1": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb5a9ee73f"
+        },
+        "GatewayId": {
+          "Ref": "igw0e46c16b"
+        }
+      },
+      "DependsOn": "gw1"
+    },	
+    "subnet2904474c": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.16.0/20",
+        "AvailabilityZone": "us-west-2b",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "eip523968115": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "instancei32d691f7": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-7172b611",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "DemoEnv",
+            "Value": "Yes"
+          },
+          {
+            "Key": "Version",
+            "Value": "9.0-SNAPSHOT"
+          },
+          {
+            "Key": "Name",
+            "Value": "Test environment"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.18.210",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard5Dev"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sglaunchwizard5Dev": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-5 created 2015-09-03T09:18:47.632-06:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "dchpassoc1": {
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        },
+        "DhcpOptionsId": "dopt-c6da27a3"
+      }
+    },
+    "assoc1": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "eip523968115",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "instancei32d691f7"
+        }
+      }
+    },
+    "ingress1": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5Dev"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "67.164.152.221/32"
+      }
+    },
+    "ingress2": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5Dev"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "67.164.152.221/32"
+      }
+    },
+    "egress1": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5Dev"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "67.164.152.221/32"
+      }
+    }
+  },
+  "Description": "Zivra Test environment VM"
+}

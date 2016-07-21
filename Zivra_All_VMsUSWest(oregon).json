@@ -1,0 +1,3392 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Resources": {
+    "vpc42186827": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "172.31.0.0/16",
+        "InstanceTenancy": "default",
+        "EnableDnsSupport": "true",
+        "EnableDnsHostnames": "true"
+      }
+    },
+    "subnet0a2a4b7d": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.32.0/20",
+        "AvailabilityZone": "us-west-2a",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "subnet2904474c": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.16.0/20",
+        "AvailabilityZone": "us-west-2b",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "subnet830cb7da": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "172.31.0.0/20",
+        "AvailabilityZone": "us-west-2c",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "igw0e46c16b": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+      }
+    },
+    "doptc6da27a3": {
+      "Type": "AWS::EC2::DHCPOptions",
+      "Properties": {
+        "DomainName": "us-west-2.compute.internal",
+        "DomainNameServers": [
+          "AmazonProvidedDNS"
+        ]
+      }
+    },
+    "aclebd6a08e": {
+      "Type": "AWS::EC2::NetworkAcl",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "rtb5a9ee73f": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "eip523625026": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": [
+        "gw1"
+      ],
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "eip523843172": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": [
+        "gw1"
+      ],
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "eip52394746": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": [
+        "gw1"
+      ],
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "eip523968115": {
+      "Type": "AWS::EC2::EIP",
+      "DependsOn": [
+        "gw1"
+      ],
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "instanceib5ac9870": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-5189a661",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Ubuntu-ChefDK-Workstation"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.31.252",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceif5aba730": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-31938b01",
+        "InstanceType": "t2.medium",
+        "KeyName": "Zivra DevOps Lab Key-JenkinsChefInstance",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "DemoEnv",
+            "Value": "Yes"
+          },
+          {
+            "Key": "Name",
+            "Value": "Instance-Jenkins-Chef-3"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "Description": "Primary network interface",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.29.113",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegrationJenkinsInstance"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei81d2c245": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-21e9f040",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "New Test Instance"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.20.32",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegrationJenkinsInstance"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei3ec19cfa": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-6c26340d",
+        "InstanceType": "r3.large",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "GitHub Enterprise Server Large"
+          }
+        ],
+        "Volumes": [
+          {
+            "Device": "/dev/sdf",
+            "VolumeId": {
+              "Ref": "volumevol7917df8e"
+            }
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.17.9",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgGithubEnterprise"
+              },
+              {
+                "Ref": "sglaunchwizard10"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceia0ea010f": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "EbsOptimized": "true",
+        "ImageId": "ami-775e4f16",
+        "InstanceType": "m4.xlarge",
+        "KeyName": "RM TEST",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "BRPM"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.23.113",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard23"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei85f98b5e": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-070e1637",
+        "InstanceType": "t2.large",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "LARGE TIS DEMO RH"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet830cb7da"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.0.70",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei58019582": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "EbsOptimized": "true",
+        "ImageId": "ami-33a2bb52",
+        "InstanceType": "m4.xlarge",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "FIRST AUTOMIC HOST not for demo"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet830cb7da"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.1.135",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard12"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceid416690e": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-4b62832b",
+        "InstanceType": "r3.large",
+        "KeyName": "Zivra DevOps Lab Key2",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "New GitHub Enterprise Server Large"
+          }
+        ],
+        "Volumes": [
+          {
+            "Device": "/dev/sdf",
+            "VolumeId": {
+              "Ref": "volumevol47cd22fe"
+            }
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet830cb7da"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.14.226",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgGithubEnterprise"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceibd8fd764": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-c8f4eda9",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key2",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "New Nexus Server"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet0a2a4b7d"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.32.153",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegrationJenkinsInstance"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei319041e9": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-4b62832b",
+        "InstanceType": "r3.large",
+        "KeyName": "Zivra DevOps Lab Key2",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "GitHub Enterprise R3 Large"
+          },
+          {
+            "Key": "DemoEnv",
+            "Value": "Yes"
+          }
+        ],
+        "Volumes": [
+          {
+            "Device": "/dev/sdb",
+            "VolumeId": {
+              "Ref": "volumevolb283c772"
+            }
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet0a2a4b7d"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.35.133",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgGithubEnterprise"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceibb57547e": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-15382025",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key2",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Ubuntu-ChefDK-Workstation2"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "Description": "Primary network interface",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.18.132",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei4c7d1a8a": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-5189a661",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Ubuntu-Victor'sapp"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet0a2a4b7d"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.43.101",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei7df425b9": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-d440a6e7",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CentOS7-Docker"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.25.138",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgCentOS7x8664withUpdatesHVM720150928AutogenByAWSMP"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceie5c7e122": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-c229c0a2",
+        "InstanceType": "t2.medium",
+        "KeyName": "Zivra DevOps Lab Key2",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Saltstack Master Med on Amazon Linux"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.24.181",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard18"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei155475d2": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-c229c0a2",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key2",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Saltstack Minion Micro on Amazon Linux"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.21.134",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard19"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceic0f9fa05": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-4dbf9e7d",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "RH-Victor'sapp"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "Description": "Primary network interface",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.31.204",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceie974bd31": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "EbsOptimized": "true",
+        "ImageId": "ami-f456b294",
+        "InstanceType": "m4.xlarge",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "AUTOMIC DEMO INSTANCE"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet0a2a4b7d"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.34.251",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard14"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei3247b9e8": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-e5e5f584",
+        "InstanceType": "t2.large",
+        "KeyName": "Zivra DevOps Lab Key2",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "ChefServer"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet830cb7da"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.5.208",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgChefServerFREE5Nodes12301AutogenByAWSMP"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei771041af": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-c229c0a2",
+        "InstanceType": "t2.micro",
+        "KeyName": "kmm",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "playground"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet0a2a4b7d"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.39.133",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard21"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei53565596": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "EbsOptimized": "true",
+        "ImageId": "ami-070e1637",
+        "InstanceType": "m4.xlarge",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "VERY LARGE TIS DEMO RHEL"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.26.100",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei9bec3d5f": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-5189a661",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Ubuntu-Docker"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.31.183",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgCentOS7x8664withUpdatesHVM720150928AutogenByAWSMP"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei3b3f06fe": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-d5c5d1e5",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Teams In Space Demo"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.22.160",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard7"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei645a2da2": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-d7450be7",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "SUSE-Artifactory-ChefWorkstation"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet0a2a4b7d"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.39.141",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei32d691f7": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-57110167",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "DemoEnv",
+            "Value": "Yes"
+          },
+          {
+            "Key": "Version",
+            "Value": "9.0-SNAPSHOT"
+          },
+          {
+            "Key": "Name",
+            "Value": "Test environment"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.18.210",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard5Dev"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceic1cc9105": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-6c26340d",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "GitHub Enterprise Server Micro"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.24.66",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard9"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei1515becf": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-e6edf487",
+        "InstanceType": "t2.medium",
+        "KeyName": "Zivra DevOps Lab Key-JenkinsChefInstance",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "New Jenkins Server"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet830cb7da"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.14.31",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegrationJenkinsInstance"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei2f0a79f4": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-4dbf9e7d",
+        "InstanceType": "t2.small",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "RH-Sonar"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet830cb7da"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.11.156",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instancei5a2a679c": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-4dbf9e7d",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Teams In Space Demo RHEL"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet0a2a4b7d"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.43.170",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sglaunchwizard8"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "instanceid66d1613": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "DisableApiTermination": "false",
+        "InstanceInitiatedShutdownBehavior": "stop",
+        "ImageId": "ami-d5c5d1e5",
+        "InstanceType": "t2.micro",
+        "KeyName": "Zivra DevOps Lab Key",
+        "Monitoring": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Nexus Pro Trial"
+          },
+          {
+            "Key": "DemoEnv",
+            "Value": "Yes"
+          }
+        ],
+        "NetworkInterfaces": [
+          {
+            "DeleteOnTermination": "true",
+            "DeviceIndex": 0,
+            "SubnetId": {
+              "Ref": "subnet2904474c"
+            },
+            "PrivateIpAddresses": [
+              {
+                "PrivateIpAddress": "172.31.21.149",
+                "Primary": "true"
+              }
+            ],
+            "GroupSet": [
+              {
+                "Ref": "sgContinuousIntegration"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "volumevol393a11de": {
+      "Type": "AWS::EC2::Volume",
+      "Properties": {
+        "AvailabilityZone": "us-west-2c",
+        "Size": "50",
+        "SnapshotId": "snap-7607bd2d",
+        "VolumeType": "gp2"
+      }
+    },
+    "volumevol47cd22fe": {
+      "Type": "AWS::EC2::Volume",
+      "Properties": {
+        "AvailabilityZone": "us-west-2c",
+        "Size": "10",
+        "VolumeType": "gp2"
+      }
+    },
+    "volumevolb283c772": {
+      "Type": "AWS::EC2::Volume",
+      "Properties": {
+        "AvailabilityZone": "us-west-2a",
+        "Size": "10",
+        "VolumeType": "gp2"
+      }
+    },
+    "volumevol74338280": {
+      "Type": "AWS::EC2::Volume",
+      "Properties": {
+        "AvailabilityZone": "us-west-2b",
+        "Size": "8",
+        "SnapshotId": "snap-bd9c25fb",
+        "VolumeType": "gp2"
+      }
+    },
+    "volumevol7917df8e": {
+      "Type": "AWS::EC2::Volume",
+      "Properties": {
+        "AvailabilityZone": "us-west-2b",
+        "Size": "10",
+        "VolumeType": "gp2"
+      }
+    },
+    "sgAWSCloudFormerWebServerSecurityGroup1UCYTWC2TQVOT": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Enable HTTPS access via port 443",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "CloudFormer"
+          }
+        ]
+      }
+    },
+    "sgBRPM4800": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-22 created 2016-06-07T22:29:09.091-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgCentOS7x8664withUpdatesHVM720150928AutogenByAWSMP": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "This security group was generated by AWS Marketplace and is based on recommended settings for CentOS 7 (x86_64) with Updates HVM version 7 2015-09-28 provided by Centos.org",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgChefServerFREE5Nodes12301AutogenByAWSMP": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "This security group was generated by AWS Marketplace and is based on recommended settings for Chef Server (FREE 5 Nodes) version 12.3.0-1 provided by Chef",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgchefworkstationnode": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for Chef workstation and nodes",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgContinuousIntegration": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-5 created 2015-08-28T19:34:51.788-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgContinuousIntegrationJenkinsInstance": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "For new Jenkins instance after Abuse report (scanning ports)",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgdefault": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "default VPC security group",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgGithubEnterprise": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security Group for Github Enterprise Server",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sgHordeGroupwareWebmailpoweredbyBitnami52120r04onUbuntu14043AutogenByAWSMP": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "This security group was generated by AWS Marketplace and is based on recommended settings for Horde Groupware Webmail powered by Bitnami version 5.2.12-0-r04 on Ubuntu 14.04.3 provided by BitRock Inc.",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard1": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-1 created 2015-08-24T11:58:31.340-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard10": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-10 created 2015-12-04T17:19:09.909-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard11": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-11 created 2016-01-14T19:00:31.089-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard12": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-12 created 2016-01-21T12:45:43.102-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard13": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-13 created 2016-02-13T20:27:17.781-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard14": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-14 created 2016-02-13T21:18:44.357-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard15": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-15 created 2016-02-15T15:32:37.954-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard16": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-16 created 2016-03-24T13:37:22.066-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard17": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-17 created 2016-03-24T13:43:26.653-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard18": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-18 created 2016-03-24T13:53:38.536-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard19": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-19 created 2016-03-24T18:21:41.594-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard2": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-2 created 2015-08-24T14:43:21.233-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard20": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-20 created 2016-04-08T15:42:15.823-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard21": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-21 created 2016-04-08T16:47:11.724-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard22": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-22 created 2016-06-08T00:00:56.558-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard23": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-23 created 2016-06-08T00:40:42.884-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard3": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-3 created 2015-08-25T14:57:58.519-06:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard4": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-4 created 2015-08-28T12:04:59.157-06:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        },
+        "Tags": [
+          {
+            "Key": "GroupName",
+            "Value": "ContinuosIntegration"
+          }
+        ]
+      }
+    },
+    "sglaunchwizard5": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-5 created 2015-09-07T10:09:54.411-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard5Dev": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-5 created 2015-09-03T09:18:47.632-06:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard6": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-6 created 2015-09-07T10:52:39.543-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard7": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-7 created 2015-09-21T16:08:11.179-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard8": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-8 created 2015-09-22T14:07:36.376-04:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "sglaunchwizard9": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "launch-wizard-9 created 2015-12-04T16:51:10.009-05:00",
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },
+    "dbsgdefault": {
+      "Type": "AWS::RDS::DBSecurityGroup",
+      "Properties": {
+        "GroupDescription": "default"
+      }
+    },
+    "acl1": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": "true",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "aclebd6a08e"
+        }
+      }
+    },
+    "acl2": {
+      "Type": "AWS::EC2::NetworkAclEntry",
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Protocol": "-1",
+        "RuleAction": "allow",
+        "RuleNumber": "100",
+        "NetworkAclId": {
+          "Ref": "aclebd6a08e"
+        }
+      }
+    },
+    "subnetacl1": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "aclebd6a08e"
+        },
+        "SubnetId": {
+          "Ref": "subnet830cb7da"
+        }
+      }
+    },
+    "subnetacl2": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "aclebd6a08e"
+        },
+        "SubnetId": {
+          "Ref": "subnet0a2a4b7d"
+        }
+      }
+    },
+    "subnetacl3": {
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "aclebd6a08e"
+        },
+        "SubnetId": {
+          "Ref": "subnet2904474c"
+        }
+      }
+    },
+    "gw1": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        },
+        "InternetGatewayId": {
+          "Ref": "igw0e46c16b"
+        }
+      }
+    },
+    "route1": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb5a9ee73f"
+        },
+        "GatewayId": {
+          "Ref": "igw0e46c16b"
+        }
+      },
+      "DependsOn": "gw1"
+    },
+    "dchpassoc2": {
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        },
+        "DhcpOptionsId": {
+          "Ref": "doptc6da27a3"
+        }
+      }
+    },
+    "assoc2": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "eip52394746",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "instanceif5aba730"
+        }
+      }
+    },
+    "assoc3": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "eip523625026",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "instancei319041e9"
+        }
+      }
+    },
+    "assoc4": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "eip523968115",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "instancei32d691f7"
+        }
+      }
+    },
+    "assoc5": {
+      "Type": "AWS::EC2::EIPAssociation",
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "eip523843172",
+            "AllocationId"
+          ]
+        },
+        "InstanceId": {
+          "Ref": "instanceid66d1613"
+        }
+      }
+    },
+    "ingress3": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgAWSCloudFormerWebServerSecurityGroup1UCYTWC2TQVOT"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress4": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgBRPM4800"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress5": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgBRPM4800"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress6": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgCentOS7x8664withUpdatesHVM720150928AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress7": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgCentOS7x8664withUpdatesHVM720150928AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress8": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgChefServerFREE5Nodes12301AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress9": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgChefServerFREE5Nodes12301AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8443",
+        "ToPort": "8443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress10": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgChefServerFREE5Nodes12301AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress11": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgchefworkstationnode"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress12": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress13": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8060",
+        "ToPort": "8060",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress14": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "9000",
+        "ToPort": "9000",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress15": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress16": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress17": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "7990",
+        "ToPort": "7990",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress18": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4000",
+        "ToPort": "4000",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress19": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "2430",
+        "ToPort": "2430",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress20": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8090",
+        "ToPort": "8090",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress21": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress22": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8081",
+        "ToPort": "8081",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress23": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress24": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8060",
+        "ToPort": "8060",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress25": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "9000",
+        "ToPort": "9000",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress26": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "7055",
+        "ToPort": "7055",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress27": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress28": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress29": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "7990",
+        "ToPort": "7990",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress30": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4000",
+        "ToPort": "4000",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress31": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "2430",
+        "ToPort": "2430",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress32": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8090",
+        "ToPort": "8090",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress33": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress34": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8081",
+        "ToPort": "8081",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress35": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgdefault"
+        },
+        "IpProtocol": "-1",
+        "SourceSecurityGroupId": {
+          "Ref": "sgdefault"
+        },
+        "SourceSecurityGroupOwnerId": "874619334872"
+      }
+    },
+    "ingress36": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress37": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "udp",
+        "FromPort": "161",
+        "ToPort": "161",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress38": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress39": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "udp",
+        "FromPort": "1194",
+        "ToPort": "1194",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress40": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress41": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "25",
+        "ToPort": "25",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress42": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8443",
+        "ToPort": "8443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress43": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "udp",
+        "FromPort": "123",
+        "ToPort": "123",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress44": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress45": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "122",
+        "ToPort": "122",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress46": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "9418",
+        "ToPort": "9418",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress47": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgHordeGroupwareWebmailpoweredbyBitnami52120r04onUbuntu14043AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress48": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgHordeGroupwareWebmailpoweredbyBitnami52120r04onUbuntu14043AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress49": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgHordeGroupwareWebmailpoweredbyBitnami52120r04onUbuntu14043AutogenByAWSMP"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress50": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard1"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress51": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard1"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "67.0.22.229/32"
+      }
+    },
+    "ingress52": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard10"
+        },
+        "IpProtocol": "udp",
+        "FromPort": "161",
+        "ToPort": "161",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress53": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard11"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "1433",
+        "ToPort": "1433",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress54": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard11"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "3389",
+        "ToPort": "3389",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress55": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress56": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "2217",
+        "ToPort": "2221",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress57": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "1433",
+        "ToPort": "1433",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress58": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress59": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8009",
+        "ToPort": "8009",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress60": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8871",
+        "ToPort": "8871",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress61": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8005",
+        "ToPort": "8005",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress62": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "2270",
+        "ToPort": "2279",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress63": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "3389",
+        "ToPort": "3389",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress64": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard13"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "1433",
+        "ToPort": "1433",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress65": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard13"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "3389",
+        "ToPort": "3389",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress66": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "2217",
+        "ToPort": "2221",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress67": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress68": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "1433",
+        "ToPort": "1433",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress69": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress70": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8009",
+        "ToPort": "8009",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress71": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8871",
+        "ToPort": "8871",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress72": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8005",
+        "ToPort": "8005",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress73": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "2270",
+        "ToPort": "2279",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress74": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "3389",
+        "ToPort": "3389",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress75": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard15"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress76": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard16"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress77": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard17"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress78": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard18"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress79": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard18"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4506",
+        "ToPort": "4506",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress80": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard18"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4505",
+        "ToPort": "4505",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress81": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard19"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress82": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard2"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress83": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard2"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress84": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard20"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress85": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard21"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress86": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard22"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress87": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard23"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress88": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard3"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress89": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard3"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress90": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard3"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8081",
+        "ToPort": "8081",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress91": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress92": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "9000",
+        "ToPort": "9000",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress93": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress94": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress95": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "4000",
+        "ToPort": "4000",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress96": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress97": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8081",
+        "ToPort": "8081",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress98": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress99": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5Dev"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "67.164.152.221/32"
+      }
+    },
+    "ingress100": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5Dev"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "67.164.152.221/32"
+      }
+    },
+    "ingress101": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard6"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "0",
+        "ToPort": "65535",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress102": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard7"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress103": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard7"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress104": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard7"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress105": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard8"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress106": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard8"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress107": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard8"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ingress108": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard9"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress2": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgAWSCloudFormerWebServerSecurityGroup1UCYTWC2TQVOT"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress3": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgBRPM4800"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress4": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgCentOS7x8664withUpdatesHVM720150928AutogenByAWSMP"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress5": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgChefServerFREE5Nodes12301AutogenByAWSMP"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress6": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgchefworkstationnode"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress7": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgchefworkstationnode"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress8": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgchefworkstationnode"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "443",
+        "ToPort": "443",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress9": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegration"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress10": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgContinuousIntegrationJenkinsInstance"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress11": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgdefault"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress12": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgGithubEnterprise"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress13": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sgHordeGroupwareWebmailpoweredbyBitnami52120r04onUbuntu14043AutogenByAWSMP"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress14": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard1"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress15": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard10"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress16": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard11"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress17": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard12"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress18": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard13"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress19": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard14"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress20": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard15"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress21": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard16"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress22": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard17"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress23": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard18"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress24": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard19"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress25": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard2"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress26": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard20"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress27": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard21"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress28": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard22"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress29": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard23"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress30": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard3"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress31": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard4"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress32": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress33": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard5Dev"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "67.164.152.221/32"
+      }
+    },
+    "egress34": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard6"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress35": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard7"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress36": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard8"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "egress37": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "sglaunchwizard9"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    }
+  },
+  "Description": "Zivra all VM's in West (oregon)"
+}
