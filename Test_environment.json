@@ -1,5 +1,13 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "KeyName": {
+      "Description" : "Name of an existing EC2 KeyPair to enable SSH access to the instance",
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "ConstraintDescription" : "must be the name of an existing EC2 KeyPair."
+    }	  
+  },  
+  
   "Resources": {
     "vpc42186827": {
       "Type": "AWS::EC2::VPC",
@@ -10,6 +18,43 @@
         "EnableDnsHostnames": "true"
       }
     },
+    "igw0e46c16b": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+      }
+    },	
+    "gw1": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        },
+        "InternetGatewayId": {
+          "Ref": "igw0e46c16b"
+        }
+      }
+    },
+    "rtb5a9ee73f": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "vpc42186827"
+        }
+      }
+    },	
+    "route1": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "RouteTableId": {
+          "Ref": "rtb5a9ee73f"
+        },
+        "GatewayId": {
+          "Ref": "igw0e46c16b"
+        }
+      },
+      "DependsOn": "gw1"
+    },	
     "subnet2904474c": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
@@ -33,7 +78,7 @@
         "InstanceInitiatedShutdownBehavior": "stop",
         "ImageId": "ami-7172b611",
         "InstanceType": "t2.micro",
-        "KeyName": "Zivra DevOps Lab Key",
+		"KeyName" : { "Ref" : "KeyName" },
         "Monitoring": "false",
         "Tags": [
           {
